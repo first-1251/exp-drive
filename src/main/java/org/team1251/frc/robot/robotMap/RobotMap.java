@@ -13,7 +13,7 @@ import org.team1251.frc.robotCore.robotMap.DeviceManager;
 public class RobotMap
 {
     // The device manager is passed simply passed the Enum class.
-    public static final DeviceManager<Devices> deviceManager = new DeviceManager<>(Devices.class);
+    public static final DeviceManager<Device> deviceManager = new DeviceManager<>(Device.class);
 
     // Duplication detection must be explicitly invoked. Doing it as a static initializer makes sure it is done
     // as soon as the RobotMap is loaded.
