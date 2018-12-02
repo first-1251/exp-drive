@@ -46,6 +46,18 @@ public class HumanInput {
     }
 
     /**
+     * Grants access to the game pad to other classes within this package.
+     *
+     * This is useful in cases when the logic for deriving specific input values is better handled by more specific
+     * classes (for example, classes for deriving drive power in various ways).
+     *
+     * @return The GamePad which the human uses to control the robot.
+     */
+    GamePad getGamePad() {
+        return gamePad;
+    }
+
+    /**
      * Sets the current means of interpreting drive input.
      */
     public void setDriveInput(DriveInput driveInput) {
