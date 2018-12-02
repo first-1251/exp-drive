@@ -6,7 +6,7 @@ plugins {
 }
 
 def TEAM = 1251
-def ROBOT_CLASS = "team1251.frc.robot.Robot"
+def ROBOT_CLASS = "org.team1251.frc.robot.Robot"
 
 repositories {
     maven { url 'https://jitpack.io' }
