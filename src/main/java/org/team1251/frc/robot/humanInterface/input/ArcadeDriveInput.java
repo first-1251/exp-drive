@@ -2,6 +2,14 @@ package org.team1251.frc.robot.humanInterface.input;
 
 abstract class ArcadeDriveInput implements DriveInput {
 
+    private final double forwardTurnFactor;
+    private final double backwardTurnFactor;
+
+    ArcadeDriveInput(double forwardTurnFactor, double backwardTurnFactor) {
+        this.forwardTurnFactor = Math.min(1, Math.max(0, forwardTurnFactor));
+        this.backwardTurnFactor = Math.min(1, Math.max(0, backwardTurnFactor));
+    }
+
     abstract double getThrottleInput(HumanInput humanInput);
     abstract double getTurnInput(HumanInput humanInput);
 
@@ -10,15 +18,25 @@ abstract class ArcadeDriveInput implements DriveInput {
         double throttleInput = getThrottleInput(humanInput);
         double turnInput = getTurnInput(humanInput);
 
+        // If no throttle, do an in-place turn using the turn input.
+        if (throttleInput == 0) {
+            return new DrivePower(-turnInput, turnInput);
+        }
+
+        // Apply appropriate turn factor depending on if the robot is going forward or backward.
+        if (throttleInput < 0) {
+            turnInput *= backwardTurnFactor;
+        } else {
+            turnInput *= forwardTurnFactor;
+        }
+
         // Calculate the dampened throttle. If the original input was negative, negate the dampened value.
         double dampenedThrottle = calculateTurnThrottle(Math.abs(throttleInput), Math.abs(turnInput));
         if (throttleInput < 0) {
             dampenedThrottle = -dampenedThrottle;
         }
 
-        if (throttleInput == 0) {
-            return new DrivePower(-turnInput, turnInput);
-        }
+
 
         double leftPower = throttleInput;
         double rightPower = throttleInput;

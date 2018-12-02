@@ -1,6 +1,7 @@
 package org.team1251.frc.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.team1251.frc.robot.commands.TeleopDrive;
@@ -22,6 +23,8 @@ public class Robot extends IterativeRobot {
     private TeleopDrive teleopDrive;
     private SendableChooser<DriveInput> driveInputChooser;
 
+    private final Preferences preferences = Preferences.getInstance();
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -37,11 +40,24 @@ public class Robot extends IterativeRobot {
 
     private void initDashboardInputs() {
 
+        double arcadeForwardTurnFactor = preferences.getDouble("forwardTurnFactor", 1);
+        double arcadeBackwardTurnFactor = preferences.getDouble("backwardTurnFactor", 1);
+
+
         // Create a way to choose the type of drive input.
         driveInputChooser = new SendableChooser<>();
         driveInputChooser.setName("Drive Controls");
-        driveInputChooser.addDefault("Dual Stick Arcade", new DualStickArcadeDriveInput());
-        driveInputChooser.addObject("Trigger Throttle Arcade", new TriggerThrottleArcadeDriveInput());
+
+        driveInputChooser.addDefault(
+                "Dual Stick Arcade",
+                new DualStickArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
+        );
+
+        driveInputChooser.addObject(
+                "Trigger Throttle Arcade",
+                new TriggerThrottleArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
+        );
+
         driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
     }
 

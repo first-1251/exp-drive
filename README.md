@@ -7,6 +7,11 @@ This project is a test-bed for experiments with various drive control schemes.
 The controller style is selectable through the `Drive Controls` Smart Dashboard 
 chooser while the Robot is disabled.
 
+For `Arcade` style controls, an additional `Backwards Turn Limiter` Smart 
+Dashboard input is supported. It can provide a number between 0 and 1 which
+will be used to scale the turning value when the robot is moving backwards
+as a training tool.
+
 ### Arcade: Dual Stick
 
 Controls:
