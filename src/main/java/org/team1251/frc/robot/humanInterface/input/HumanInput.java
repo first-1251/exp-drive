@@ -28,6 +28,11 @@ public class HumanInput {
     private GamePad gamePad;
 
     /**
+     * A helper which translates raw human input into drive input.
+     */
+    private DriveInput driveInput;
+
+    /**
      * Creates a new instance
      */
     public HumanInput() {
@@ -40,6 +45,12 @@ public class HumanInput {
         );
     }
 
+    /**
+     * Sets the current means of interpreting drive input.
+     */
+    public void setDriveInput(DriveInput driveInput) {
+        this.driveInput = driveInput;
+    }
 
     public void attachCommandTriggers() {
 
@@ -58,4 +69,15 @@ public class HumanInput {
         // would be a reasonable time to do it, if you have a reason to.
     }
 
+    /**
+     * Gets the currently requested drive power.
+     */
+    public DrivePower getDrivePower() {
+
+        if (driveInput == null) {
+            return new DrivePower(0,0);
+        }
+
+        return driveInput.getDrivePower(this);
+    }
 }
