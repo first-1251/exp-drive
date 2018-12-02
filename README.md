@@ -18,8 +18,11 @@ Controls:
 
 - **Drive Forward:** `Right Trigger`
 - **Drive Backward:** `Left Trigger`
-- **"Brake":** `Right Trigger` + `Left Trigger`
 - **Turn:** `Left Stick` Left/Right 
+
+*Note: Using both `RT` and `LT` will cause them to fight one another. The final speed 
+and direction will be determined by how hard each button is being pressed. For example,
+75% press of `RT` and 100% press of `LT` will result in 25% backward speed.*
 
 ### Tank: Dual Stick
 
