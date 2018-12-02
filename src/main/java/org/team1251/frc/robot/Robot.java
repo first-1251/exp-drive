@@ -2,6 +2,10 @@ package org.team1251.frc.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import org.team1251.frc.robot.commands.TeleopDrive;
+import org.team1251.frc.robot.humanInterface.input.*;
+import org.team1251.frc.robot.subsystems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -13,13 +17,32 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class Robot extends IterativeRobot {
 
 
+    private HumanInput humanInput;
+    private DriveTrain driveTrain;
+    private TeleopDrive teleopDrive;
+    private SendableChooser<DriveInput> driveInputChooser;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
 
+        initDashboardInputs();
 
+        humanInput = new HumanInput();
+        driveTrain = new DriveTrain();
+        teleopDrive = new TeleopDrive(driveTrain, humanInput);
+    }
+
+    private void initDashboardInputs() {
+
+        // Create a way to choose the type of drive input.
+        driveInputChooser = new SendableChooser<>();
+        driveInputChooser.setName("Drive Controls");
+        driveInputChooser.addDefault("Dual Stick Arcade", new DualStickArcadeDriveInput());
+        driveInputChooser.addObject("Trigger Throttle Arcade", new TriggerThrottleArcadeDriveInput());
+        driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
     }
 
 
@@ -62,7 +85,8 @@ public class Robot extends IterativeRobot {
         // this line or comment it out.
 
         //if (autonomousCommand != null) autonomousCommand.cancel();
-
+        humanInput.setDriveInput(driveInputChooser.getSelected());
+        driveTrain.setDefaultCommand(teleopDrive);
     }
 
     /**
