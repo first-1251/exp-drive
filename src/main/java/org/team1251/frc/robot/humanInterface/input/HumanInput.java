@@ -1,5 +1,11 @@
 package org.team1251.frc.robot.humanInterface.input;
 
+import edu.wpi.first.wpilibj.Joystick;
+import org.team1251.frc.robotCore.humanInterface.input.SimpleAnalogButtonConfig;
+import org.team1251.frc.robotCore.humanInterface.input.SimpleStickConfig;
+import org.team1251.frc.robotCore.humanInterface.input.gamepad.GamePad;
+import org.team1251.frc.robotCore.humanInterface.input.gamepad.ModernGamePad;
+
 /**
  * The HumanInput encapsulates everything related to human input and provides a clean interface for all commands and
  * subsystems to use.
@@ -17,23 +23,24 @@ public class HumanInput {
     private boolean commandTriggersAttached = false;
 
     /**
+     * The primary input device
+     */
+    private GamePad gamePad;
+
+    /**
      * Creates a new instance
      */
     public HumanInput() {
-        // TODO: Inject or instantiate human input devices, store them in local private properties.
-
+        gamePad = new ModernGamePad(
+                new Joystick(0),
+                new SimpleStickConfig(.05, false, false),
+                new SimpleStickConfig(.05, false, false),
+                new SimpleAnalogButtonConfig(.05, .50),
+                new SimpleAnalogButtonConfig(.05, .50)
+        );
     }
 
-    /**
-     * Attaches human-input related triggers to commands.
-     *
-     * This method should only ever be called once.
-     *
-     * ** WARNING **
-     *
-     * There is no built-in way to detach a command trigger. There is no built-in protection against
-     * attaching two commands to the same trigger.
-     */
+
     public void attachCommandTriggers() {
 
         // TODO: Inject commands which need to be attached to command triggers.
@@ -49,11 +56,6 @@ public class HumanInput {
 
         // By Default, there is no reason to "remember" the commands or the triggers as class properties. But now
         // would be a reasonable time to do it, if you have a reason to.
-
-
     }
 
-    // TODO: Implement public access to meaningful values, but NOT to the devices!
-    // Good: `public double getElevatorSpeed() { return gamePad.getVertical(); }`
-    // Bad:  `public GamePad getGamePad() { return gamePad; }
 }
