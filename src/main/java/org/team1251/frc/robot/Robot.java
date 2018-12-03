@@ -52,13 +52,18 @@ public class Robot extends IterativeRobot {
         driveInputChooser.setName("Drive Controls");
 
         driveInputChooser.addDefault(
-                "Dual Stick Arcade",
+                "Arcade: Dual Stick",
                 new DualStickArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
         );
 
         driveInputChooser.addObject(
-                "Trigger Throttle Arcade",
+                "Arcade: Trigger Throttle",
                 new TriggerThrottleArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
+        );
+
+        driveInputChooser.addDefault(
+                "Arcade: Single Stick",
+                new SingleStickArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
         );
 
         driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
