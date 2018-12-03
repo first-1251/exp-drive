@@ -1,9 +1,14 @@
 package org.team1251.frc.robot.humanInterface.input;
 
-abstract class ArcadeDriveInput implements DriveInput {
+public abstract class ArcadeDriveInput implements DriveInput {
 
-    private final double forwardTurnFactor;
-    private final double backwardTurnFactor;
+    private double forwardTurnFactor;
+    private double backwardTurnFactor;
+
+    public void setTurnFactor(double forwardTurnFactor, double backwardTurnFactor) {
+        this.forwardTurnFactor = forwardTurnFactor;
+        this.backwardTurnFactor = backwardTurnFactor;
+    }
 
     ArcadeDriveInput(double forwardTurnFactor, double backwardTurnFactor) {
         this.forwardTurnFactor = Math.min(1, Math.max(0, forwardTurnFactor));

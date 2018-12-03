@@ -1,7 +1,6 @@
 package org.team1251.frc.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,8 +25,6 @@ public class Robot extends IterativeRobot {
     private TeleopDrive teleopDrive;
     private SendableChooser<DriveInput> driveInputChooser;
 
-    private final Preferences preferences = Preferences.getInstance();
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -43,9 +40,9 @@ public class Robot extends IterativeRobot {
 
     private void initDashboardInputs() {
 
-        double arcadeForwardTurnFactor = preferences.getDouble("forwardTurnFactor", 1);
-        double arcadeBackwardTurnFactor = preferences.getDouble("backwardTurnFactor", 1);
-
+        // Initialize turn factors values to 1.
+        SmartDashboard.putNumber("forwardTurnFactor", 1);
+        SmartDashboard.putNumber("backwardTurnFactor", 1);
 
         // Create a way to choose the type of drive input.
         driveInputChooser = new SendableChooser<>();
@@ -53,17 +50,17 @@ public class Robot extends IterativeRobot {
 
         driveInputChooser.addDefault(
                 "Arcade: Dual Stick",
-                new DualStickArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
+                new DualStickArcadeDriveInput(1, 1)
         );
 
         driveInputChooser.addObject(
                 "Arcade: Trigger Throttle",
-                new TriggerThrottleArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
+                new TriggerThrottleArcadeDriveInput(1, 1)
         );
 
         driveInputChooser.addDefault(
                 "Arcade: Single Stick",
-                new SingleStickArcadeDriveInput(arcadeForwardTurnFactor, arcadeBackwardTurnFactor)
+                new SingleStickArcadeDriveInput(1, 1)
         );
 
         driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
@@ -113,6 +110,14 @@ public class Robot extends IterativeRobot {
         //if (autonomousCommand != null) autonomousCommand.cancel();
         humanInput.setDriveInput(driveInputChooser.getSelected());
         driveTrain.setDefaultCommand(teleopDrive);
+
+        // Update turn factors for arcade drive controls.
+        if (driveInputChooser.getSelected() instanceof ArcadeDriveInput) {
+            ((ArcadeDriveInput) driveInputChooser.getSelected()).setTurnFactor(
+                    SmartDashboard.getNumber("forwardTurnFactor", 1),
+                    SmartDashboard.getNumber("backwardTurnFactor", 1)
+            );
+        }
     }
 
     /**
