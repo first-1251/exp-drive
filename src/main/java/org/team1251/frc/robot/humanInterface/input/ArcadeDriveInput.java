@@ -18,8 +18,9 @@ abstract class ArcadeDriveInput implements DriveInput {
         double throttleInput = getThrottleInput(humanInput);
         double turnInput = getTurnInput(humanInput);
 
-        // If no throttle, do an in-place turn using the turn input.
-        if (throttleInput == 0) {
+        // If near to no throttle, do an in-place turn using the turn input. This fixes a problem where
+        // some noise on the line will rarely prevent the quick-turn logic from triggering.
+        if (Math.abs(throttleInput) <= .05) {
             return new DrivePower(-turnInput, turnInput);
         }
 
