@@ -1,3 +1,7 @@
+import jaci.openrio.gradle.GradleRIOPlugin
+import jaci.openrio.gradle.frc.FRCJavaArtifact
+import jaci.openrio.gradle.frc.RoboRIO
+
 plugins {
     id "java"
     id "eclipse"
@@ -16,12 +20,12 @@ repositories {
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
     targets {
-        target("roborio", jaci.openrio.gradle.frc.RoboRIO) {
+        target("roborio", RoboRIO) {
             team = TEAM
         }
     }
     artifacts {
-        artifact('frcJava', jaci.openrio.gradle.frc.FRCJavaArtifact) {
+        artifact('frcJava', FRCJavaArtifact) {
             targets << "roborio"
         }
     }
@@ -33,7 +37,7 @@ dependencies {
     compile wpilib() // Core stuff
     compile ctre()   // Talon SRX + friends
     compile navx()   // gyro/accelerometer/compass
-    compile 'com.github.first-1251:robot-core:master-SNAPSHOT'
+    compile 'com.github.first-1251:robot-core:better-device-manager-SNAPSHOT'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
@@ -41,7 +45,7 @@ dependencies {
 // knows where to look for our Robot Class.
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest jaci.openrio.gradle.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+    manifest GradleRIOPlugin.javaManifest(ROBOT_CLASS)
 }
 
 task wrapper(type: Wrapper) {

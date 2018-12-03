@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import org.team1251.frc.robot.commands.TeleopDrive;
 import org.team1251.frc.robot.humanInterface.input.*;
+import org.team1251.frc.robot.robotMap.DeviceManager;
 import org.team1251.frc.robot.subsystems.DriveTrain;
 
 /**
@@ -17,6 +18,7 @@ import org.team1251.frc.robot.subsystems.DriveTrain;
  */
 public class Robot extends IterativeRobot {
 
+    private final DeviceManager deviceManager = new DeviceManager();
 
     private HumanInput humanInput;
     private DriveTrain driveTrain;
@@ -34,7 +36,7 @@ public class Robot extends IterativeRobot {
         initDashboardInputs();
 
         humanInput = new HumanInput();
-        driveTrain = new DriveTrain();
+        driveTrain = new DriveTrain(deviceManager);
         teleopDrive = new TeleopDrive(driveTrain, humanInput);
     }
 

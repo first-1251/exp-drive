@@ -2,34 +2,35 @@ package org.team1251.frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Talon;
-import org.team1251.frc.robot.Motor;
 import org.team1251.frc.robot.humanInterface.input.DrivePower;
-import org.team1251.frc.robot.robotMap.RobotMap;
-import org.team1251.frc.robotCore.robotMap.PortType;
-import org.team1251.frc.robotCore.subsystems.NoInitDefaultCmdSubsystem;
+import org.team1251.frc.robot.robotMap.DeviceConnector;
+import org.team1251.frc.robot.robotMap.DeviceManager;
+import org.team1251.frc.robotCore.subsystems.Subsystem;
 
-public class DriveTrain extends NoInitDefaultCmdSubsystem {
+public class DriveTrain extends Subsystem {
 
     private final SpeedControllerGroup leftTrain;
     private final SpeedControllerGroup rightTrain;
+    private final DeviceManager deviceManager;
 
-    public DriveTrain() {
+    public DriveTrain(DeviceManager deviceManager) {
+
+        this.deviceManager = deviceManager;
 
         leftTrain = new SpeedControllerGroup(
-            initController(Motor.LEFT_A),
-            initController(Motor.LEFT_B)
+            initController(DeviceConnector.DRIVE_LEFT_A, false),
+            initController(DeviceConnector.DRIVE_LEFT_B, false)
         );
 
         rightTrain = new SpeedControllerGroup(
-                initController(Motor.RIGHT_A),
-                initController(Motor.RIGHT_B)
+                initController(DeviceConnector.DRIVE_RIGHT_A, true),
+                initController(DeviceConnector.DRIVE_RIGHT_B, true)
         );
     }
 
-    private static Talon initController(Motor motor) {
-        System.out.println("Port: " + RobotMap.deviceManager.getPort(motor.getDevice(), PortType.PWM));
-        Talon controller = new Talon(RobotMap.deviceManager.getPort(motor.getDevice(), PortType.PWM));
-        controller.setInverted(motor.isInverted());
+    private Talon initController(DeviceConnector motorConnector, boolean isInverted) {
+        Talon controller = deviceManager.createTalon(motorConnector);
+        controller.setInverted(isInverted);
         return controller;
     }
 
