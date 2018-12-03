@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team1251.frc.robot.commands.TeleopDrive;
 import org.team1251.frc.robot.humanInterface.input.*;
 import org.team1251.frc.robot.robotMap.DeviceManager;
@@ -61,6 +62,8 @@ public class Robot extends IterativeRobot {
         );
 
         driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
+
+        SmartDashboard.putData("Drive Controls", driveInputChooser);
     }
 
 
