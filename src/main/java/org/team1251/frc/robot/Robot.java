@@ -50,11 +50,16 @@ public class Robot extends IterativeRobot {
         );
 
         driveInputChooser.addObject(
+                "Arcade: Trigger Turn",
+                new TriggerTurnArcadeDriveInput()
+        );
+
+        driveInputChooser.addObject(
                 "Arcade: Trigger Throttle",
                 new TriggerThrottleArcadeDriveInput()
         );
 
-        driveInputChooser.addDefault(
+        driveInputChooser.addObject(
                 "Arcade: Single Stick",
                 new SingleStickArcadeDriveInput()
         );
