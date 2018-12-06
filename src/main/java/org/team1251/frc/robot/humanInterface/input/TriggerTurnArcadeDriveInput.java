@@ -18,8 +18,10 @@ public class TriggerTurnArcadeDriveInput extends ArcadeDriveInput {
         double throttle = getThrottleInput(humanInput);
         double turn = getTurnInput(humanInput);
 
-        // If turn power is higher than 92% in either direction, force a quick-turn
-        boolean isQuickTurn = Math.abs(turn) > .92;
+        // Quick turn happens when there is turning power applied but (near) no throttle... but it can also be
+        // forced if turn power exceeds 92%, even when moving.
+        double turnPower = Math.abs(turn);
+        boolean isQuickTurn = turnPower > .92 || Math.abs(throttle) <= 0.05 && turnPower > .05;
 
         // Put it all together and return it.
         return new InputValues(throttle, turn, isQuickTurn);
