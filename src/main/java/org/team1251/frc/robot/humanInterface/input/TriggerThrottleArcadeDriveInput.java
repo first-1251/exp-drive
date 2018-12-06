@@ -19,12 +19,12 @@ public class TriggerThrottleArcadeDriveInput extends ArcadeDriveInput {
         return Util.applyInputCurve(
                 throttleSmoother.getSmoothedValue(
                         humanInput.getGamePad().lt().getValue() - humanInput.getGamePad().rt().getValue()
-                )
+                ), .75, 6
         );
     }
 
     @Override
     double getTurnInput(HumanInput humanInput) {
-        return Util.applyInputCurve(humanInput.getGamePad().ls().getHorizontal());
+        return Util.applyInputCurve(humanInput.getGamePad().ls().getHorizontal(), .75, 6);
     }
 }

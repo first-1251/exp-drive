@@ -31,7 +31,7 @@ public class TriggerTurnArcadeDriveInput extends ArcadeDriveInput {
         // Smooth the value coming off the stick to soften dramatic changes and then pass the result through
         // the input curve function.
         return Util.applyInputCurve(
-                throttleSmoother.getSmoothedValue(humanInput.getGamePad().ls().getVertical())
+                throttleSmoother.getSmoothedValue(humanInput.getGamePad().ls().getVertical()), .75, 6
         );
     }
 
