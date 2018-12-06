@@ -7,8 +7,8 @@ public class TriggerThrottleArcadeDriveInput extends ArcadeDriveInput {
 
     private final ValueSmoother throttleSmoother;
 
-    public TriggerThrottleArcadeDriveInput(double forwardTurnFactor, double backwardTurnFactor) {
-        super(forwardTurnFactor, backwardTurnFactor);
+    public TriggerThrottleArcadeDriveInput() {
+        super();
         throttleSmoother = new ValueSmoother(3);
     }
 

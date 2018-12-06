@@ -7,8 +7,8 @@ public class SingleStickArcadeDriveInput extends ArcadeDriveInput {
 
     private final ValueSmoother throttleSmoother;
 
-    public SingleStickArcadeDriveInput(double forwardTurnFactor, double backwardTurnFactor) {
-        super(forwardTurnFactor, backwardTurnFactor);
+    public SingleStickArcadeDriveInput() {
+        super();
         throttleSmoother = new ValueSmoother(3);
     }
 

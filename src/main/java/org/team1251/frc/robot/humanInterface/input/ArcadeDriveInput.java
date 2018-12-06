@@ -2,18 +2,6 @@ package org.team1251.frc.robot.humanInterface.input;
 
 public abstract class ArcadeDriveInput implements DriveInput {
 
-    private double forwardTurnFactor;
-    private double backwardTurnFactor;
-
-    public void setTurnFactor(double forwardTurnFactor, double backwardTurnFactor) {
-        this.forwardTurnFactor = forwardTurnFactor;
-        this.backwardTurnFactor = backwardTurnFactor;
-    }
-
-    ArcadeDriveInput(double forwardTurnFactor, double backwardTurnFactor) {
-        this.forwardTurnFactor = Math.min(1, Math.max(0, forwardTurnFactor));
-        this.backwardTurnFactor = Math.min(1, Math.max(0, backwardTurnFactor));
-    }
 
     abstract double getThrottleInput(HumanInput humanInput);
     abstract double getTurnInput(HumanInput humanInput);
@@ -27,13 +15,6 @@ public abstract class ArcadeDriveInput implements DriveInput {
         // some noise on the line will rarely prevent the quick-turn logic from triggering.
         if (Math.abs(throttleInput) <= .05) {
             return new DrivePower(-turnInput, turnInput);
-        }
-
-        // Apply appropriate turn factor depending on if the robot is going forward or backward.
-        if (throttleInput < 0) {
-            turnInput *= backwardTurnFactor;
-        } else {
-            turnInput *= forwardTurnFactor;
         }
 
         // Calculate the dampened throttle. If the original input was negative, negate the dampened value.

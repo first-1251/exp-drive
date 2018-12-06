@@ -40,27 +40,23 @@ public class Robot extends IterativeRobot {
 
     private void initDashboardInputs() {
 
-        // Initialize turn factors values to 1.
-        SmartDashboard.putNumber("forwardTurnFactor", 1);
-        SmartDashboard.putNumber("backwardTurnFactor", 1);
-
         // Create a way to choose the type of drive input.
         driveInputChooser = new SendableChooser<>();
         driveInputChooser.setName("Drive Controls");
 
         driveInputChooser.addDefault(
                 "Arcade: Dual Stick",
-                new DualStickArcadeDriveInput(1, 1)
+                new DualStickArcadeDriveInput()
         );
 
         driveInputChooser.addObject(
                 "Arcade: Trigger Throttle",
-                new TriggerThrottleArcadeDriveInput(1, 1)
+                new TriggerThrottleArcadeDriveInput()
         );
 
         driveInputChooser.addDefault(
                 "Arcade: Single Stick",
-                new SingleStickArcadeDriveInput(1, 1)
+                new SingleStickArcadeDriveInput()
         );
 
         driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
@@ -110,14 +106,6 @@ public class Robot extends IterativeRobot {
         //if (autonomousCommand != null) autonomousCommand.cancel();
         humanInput.setDriveInput(driveInputChooser.getSelected());
         driveTrain.setDefaultCommand(teleopDrive);
-
-        // Update turn factors for arcade drive controls.
-        if (driveInputChooser.getSelected() instanceof ArcadeDriveInput) {
-            ((ArcadeDriveInput) driveInputChooser.getSelected()).setTurnFactor(
-                    SmartDashboard.getNumber("forwardTurnFactor", 1),
-                    SmartDashboard.getNumber("backwardTurnFactor", 1)
-            );
-        }
     }
 
     /**
