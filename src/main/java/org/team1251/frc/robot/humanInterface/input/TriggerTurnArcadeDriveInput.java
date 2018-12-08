@@ -9,22 +9,9 @@ public class TriggerTurnArcadeDriveInput extends ArcadeDriveInput {
     public TriggerTurnArcadeDriveInput() {
         super();
         throttleSmoother = new Util.ValueSmoother(3, true);
-    }
 
-    @Override
-    InputValues getInputValues(HumanInput humanInput) {
-
-        // Get the direct throttle/turn inputs
-        double throttle = getThrottleInput(humanInput);
-        double turn = getTurnInput(humanInput);
-
-        // Quick turn happens when there is turning power applied but (near) no throttle... but it can also be
-        // forced if turn power exceeds 92%, even when moving.
-        double turnPower = Math.abs(turn);
-        boolean isQuickTurn = turnPower > .92 || Math.abs(throttle) <= 0.05 && turnPower > .05;
-
-        // Put it all together and return it.
-        return new InputValues(throttle, turn, isQuickTurn);
+        // Less range on the triggers, so require more turn power before we are willing to do an in-motion quick-turn.
+        movingQuickTurnThreshold = .98;
     }
 
     @Override
@@ -38,12 +25,9 @@ public class TriggerTurnArcadeDriveInput extends ArcadeDriveInput {
 
     @Override
     double getTurnInput(HumanInput humanInput) {
-
-        // TODO: Apply input curve?
-
         // Right turn value less the left turn value gives us the net turn value. If left turn value is bigger, we'll
         // end up with a negative number which is what we want.
-        return humanInput.getGamePad().rt().getValue() - humanInput.getGamePad().lt().getValue();
+        return Util.applyInputCurve(humanInput.getGamePad().rt().getValue() - humanInput.getGamePad().lt().getValue(), .75, 6);
 
     }
 }

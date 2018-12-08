@@ -17,8 +17,11 @@ public class Util {
     public static double applyInputCurve(double value, double dampeningStrength, int dampeningRangeFactor) {
         // Do the math, preserve the original sign.
         //
-        double refined = (dampeningStrength * Math.pow(value, dampeningRangeFactor)) + ((1 - dampeningStrength) * value);
-        return value < 0 ? -refined : refined;
+
+        double absValue = Math.abs(value);
+
+        double refined = (dampeningStrength * Math.pow(absValue, dampeningRangeFactor)) + ((1 - dampeningStrength) * absValue);
+        return value < 0 && refined > 0 ? -refined : refined;
     }
 
     public static class ValueSmoother {
