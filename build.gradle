@@ -1,42 +1,42 @@
-import jaci.openrio.gradle.GradleRIOPlugin
-import jaci.openrio.gradle.frc.FRCJavaArtifact
-import jaci.openrio.gradle.frc.RoboRIO
-
 plugins {
     id "java"
-    id "eclipse"
     id "idea"
-    id "jaci.openrio.gradle.GradleRIO" version "2018.02.17"
+    id "edu.wpi.first.GradleRIO" version "2019.0.0-alpha-3"
 }
-
-def TEAM = 1251
-def ROBOT_CLASS = "org.team1251.frc.robot.Robot"
 
 repositories {
     maven { url 'https://jitpack.io' }
 }
 
+def ROBOT_CLASS = "org.team1251.frc.robot.Robot"
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
 deploy {
     targets {
-        target("roborio", RoboRIO) {
-            team = TEAM
+        target("roborio", edu.wpi.first.gradlerio.frc.RoboRIO) {
+            // Team number is loaded either from the .wpilib/wpilib_preferences.json
+            // or from command line. If not found an exception will be thrown.
+            // You can use getTeamOrDefault(team) instead of getTeamNumber if you
+            // want to store a team number in this file.
+            team = getTeamNumber()
         }
     }
     artifacts {
-        artifact('frcJava', FRCJavaArtifact) {
+        artifact('frcJava', edu.wpi.first.gradlerio.frc.FRCJavaArtifact) {
             targets << "roborio"
+            // Debug can be overridden by command line, for use with VSCode
+            debug = getDebugOrDefault(false)
         }
     }
 }
 
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
-// and NavX (gyro/accelerometer/compass).
+// and NavX.
 dependencies {
-    compile wpilib() // Core stuff
-    compile ctre()   // Talon SRX + friends
-    compile navx()   // gyro/accelerometer/compass
+    compile wpilib()
+    compile ctre()
+    compile navx()
     compile 'com.github.first-1251:robot-core:better-device-manager-SNAPSHOT'
 }
 
@@ -45,9 +45,16 @@ dependencies {
 // knows where to look for our Robot Class.
 jar {
     from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-    manifest GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.4'
+// Force Java 8 Compatibility mode for deployed code, in case the develoment
+// system is using Java 10.
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+wrapper {
+    gradleVersion = '4.9'
 }
