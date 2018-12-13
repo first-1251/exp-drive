@@ -44,26 +44,13 @@ public class Robot extends IterativeRobot {
         driveInputChooser = new SendableChooser<>();
         driveInputChooser.setName("Drive Controls");
 
-        driveInputChooser.addDefault(
-                "Arcade: Dual Stick",
-                new DualStickArcadeDriveInput()
-        );
+        driveInputChooser.addDefault("Tiger Drive: Trigger Throttle", new TriggerThrottleTigerDriveInput());
+        driveInputChooser.addObject("Tiger Drive: Dual Stick", new DualStickTigerDriveInput());
 
-        driveInputChooser.addObject(
-                "Arcade: Trigger Turn",
-                new TriggerTurnArcadeDriveInput()
-        );
+        driveInputChooser.addObject("Arcade: Trigger Throttle", new TriggerThrottleArcadeDriveInput());
+        driveInputChooser.addObject("Arcade: Dual Stick", new DualStickArcadeDriveInput());
 
-        driveInputChooser.addObject(
-                "Arcade: Trigger Throttle",
-                new TriggerThrottleArcadeDriveInput()
-        );
-
-        driveInputChooser.addObject(
-                "Arcade: Single Stick",
-                new SingleStickArcadeDriveInput()
-        );
-
+        driveInputChooser.addObject("Arcade: Trigger Turn", new TriggerTurnArcadeDriveInput());
         driveInputChooser.addObject("Dual Stick Tank", new TankDriveInput());
 
         SmartDashboard.putData("Drive Controls", driveInputChooser);
