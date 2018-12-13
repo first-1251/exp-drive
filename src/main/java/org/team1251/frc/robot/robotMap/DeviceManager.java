@@ -1,5 +1,6 @@
 package org.team1251.frc.robot.robotMap;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Talon;
 import org.team1251.frc.robotCore.robotMap.AbstractDeviceManager;
 import org.team1251.frc.robotCore.robotMap.PortType;
@@ -8,11 +9,17 @@ import org.team1251.frc.robotCore.robotMap.PortType;
  * Class for centralized management of devices and their port assignments.
  */
 public class DeviceManager extends AbstractDeviceManager<DeviceConnector> {
+
+    private PowerDistributionPanel pdpInstance;
+
     /**
      * Create a new instance.
      */
     public DeviceManager() {
         super(DeviceConnector.class);
+
+        // Immediately occupy port 0 of can. It is reserved for the PDP.
+        occupyPort(DeviceConnector.PDP_CAN);
     }
 
     // TODO: Add Factory methods for devices (see createTalon() example below)
@@ -23,5 +30,14 @@ public class DeviceManager extends AbstractDeviceManager<DeviceConnector> {
     public Talon createTalon(DeviceConnector connector) {
         occupyPort(connector);
         return new Talon(getPortNumber(connector, PortType.PWM));
+    }
+
+    public PowerDistributionPanel getPDP() {
+        // Special handling for the PDP. Only ever create a single instance and always return that instance.
+        if (pdpInstance != null) {
+            return pdpInstance;
+        }
+
+        return pdpInstance = new PowerDistributionPanel();
     }
 }
