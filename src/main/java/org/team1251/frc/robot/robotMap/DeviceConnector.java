@@ -19,12 +19,13 @@ public enum DeviceConnector implements DeviceConnectorInterface {
      */
     PDP_CAN(PortType.CAN, 0),
 
-    // Replace with devices for your robot
-    DRIVE_LEFT_A(PortType.PWM, 0),
-    DRIVE_LEFT_B(PortType.PWM, 1),
+    MC_DRIVE_LEFT_BACK(PortType.CAN, 15), // Talon
+    MC_DRIVE_LEFT_MIDDLE(PortType.CAN, 16), // Victor, mini-cim
+    MC_DRIVE_LEFT_FRONT(PortType.CAN, 2), // Victor
 
-    DRIVE_RIGHT_A(PortType.PWM, 2),
-    DRIVE_RIGHT_B(PortType.PWM, 3);
+    MC_DRIVE_RIGHT_BACK(PortType.CAN, 4), // Talon
+    MC_DRIVE_RIGHT_MIDDLE(PortType.CAN, 3), // Victor, mini-cim
+    MC_DRIVE_RIGHT_FRONT(PortType.CAN, 1); // Victor
 
     /**
      * Port assignment for each Device

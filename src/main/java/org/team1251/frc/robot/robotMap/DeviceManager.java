@@ -1,5 +1,7 @@
 package org.team1251.frc.robot.robotMap;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Talon;
 import org.team1251.frc.robotCore.robotMap.AbstractDeviceManager;
@@ -30,6 +32,16 @@ public class DeviceManager extends AbstractDeviceManager<DeviceConnector> {
     public Talon createTalon(DeviceConnector connector) {
         occupyPort(connector);
         return new Talon(getPortNumber(connector, PortType.PWM));
+    }
+
+    public WPI_TalonSRX createTalonSRX(DeviceConnector connector) {
+        occupyPort(connector);
+        return new WPI_TalonSRX(getPortNumber(connector, PortType.CAN));
+    }
+
+    public WPI_VictorSPX createVictorSPX(DeviceConnector connector) {
+        occupyPort(connector);
+        return new WPI_VictorSPX(getPortNumber(connector, PortType.CAN));
     }
 
     public PowerDistributionPanel getPDP() {
