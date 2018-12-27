@@ -1,6 +1,6 @@
 package org.team1251.frc.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +16,9 @@ import org.team1251.frc.robot.subsystems.DriveTrain;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
+
+    private static final double TICK_PERIOD = .01;
 
     private final DeviceManager deviceManager = new DeviceManager();
 
@@ -24,6 +26,13 @@ public class Robot extends IterativeRobot {
     private DriveTrain driveTrain;
     private TeleopDrive teleopDrive;
     private SendableChooser<DriveInput> driveInputChooser;
+
+    private int testTicks = 0;
+
+    public Robot() {
+        super();
+        setPeriod(TICK_PERIOD);
+    }
 
     /**
      * This function is run when the robot is first started up and should be
@@ -107,11 +116,72 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    @Override
+    public void testInit() {
+         testTicks = 0;
+         driveTrain.setControllerFollowMode(false);
+    }
+
     /**
      * This function is called periodically during test mode
      */
+    @Override
     public void testPeriodic() {
+        // See if the test has been reset.
+        if (humanInput.isTestResetButtonPressed()) {
+            testTicks = 0;
+            return;
+        }
 
+        // See if the special test button is being pressed
+        if (!humanInput.isTestButtonPressed()) {
+            // Actively stop the current motor test.
+            driveTrain.stopMotorTest();
+
+            // Return before incrementing test ticks or elapsed time. This effectively "pauses" the test.
+            return;
+        }
+
+        // Keep track of how many ticks have passed while testing is active then combine it with the tick period to
+        // derive a time-based measure of how much testing time has passed.
+        testTicks++;
+        double elapsed = testTicks * TICK_PERIOD * 2; // Fast-forward!!
+
+        // Announce elapsed time every 50 test ticks.
+        if (testTicks % 50 == 0) {
+            System.out.println("Test time elapsed: " + elapsed);
+        }
+
+        // Run different motors depending on how much time has passed.
+        if (elapsed < 5) {
+            // Do nothing for the first few seconds.
+        } else if (elapsed < 10) {
+            driveTrain.testMotor(DriveTrain.Motor.LEFT_BACK);
+        } else if (elapsed < 15) {
+            driveTrain.stopMotorTest();
+        } else if (elapsed < 20) {
+            driveTrain.testMotor(DriveTrain.Motor.LEFT_MIDDLE);
+        } else if (elapsed < 25) {
+            driveTrain.stopMotorTest();
+        } else if (elapsed < 30) {
+            driveTrain.testMotor(DriveTrain.Motor.LEFT_FRONT);
+        } else if (elapsed < 35) {
+            driveTrain.stopMotorTest();
+        } else if (elapsed < 40) {
+            driveTrain.testMotor(DriveTrain.Motor.RIGHT_BACK);
+        } else if (elapsed < 45) {
+            driveTrain.stopMotorTest();
+        } else if (elapsed < 50) {
+            driveTrain.testMotor(DriveTrain.Motor.RIGHT_MIDDLE);
+        } else if (elapsed < 55) {
+            driveTrain.stopMotorTest();
+        }  else if (elapsed < 60) {
+            driveTrain.testMotor(DriveTrain.Motor.RIGHT_FRONT);
+        } else {
+            // We haven't reached our minimum elapsed testing time or have exceeded the maximum testing time.
+            // In either case, explicitly stop the motor test.
+            driveTrain.stopMotorTest();
+        }
     }
 
 }

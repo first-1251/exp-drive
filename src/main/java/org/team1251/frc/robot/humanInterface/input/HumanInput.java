@@ -92,4 +92,12 @@ public class HumanInput {
 
         return driveInput.getDrivePower(this);
     }
+
+    public boolean isTestButtonPressed() {
+        return gamePad.x().isPressed();
+    }
+
+    public boolean isTestResetButtonPressed() {
+        return gamePad.b().isPressed();
+    }
 }
