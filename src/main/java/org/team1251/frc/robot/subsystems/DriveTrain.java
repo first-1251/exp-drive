@@ -40,13 +40,13 @@ public class DriveTrain extends Subsystem {
         this.deviceManager = deviceManager;
         
         leftTrain = leftBackMotorController = deviceManager.createTalonSRX(DeviceConnector.MC_DRIVE_LEFT_BACK);
-        configureController(leftBackMotorController, false);
+        configureController(leftBackMotorController, true);
 
         leftMiddleMotorController = deviceManager.createVictorSPX(DeviceConnector.MC_DRIVE_LEFT_MIDDLE);
-        configureController(leftMiddleMotorController, false);
+        configureController(leftMiddleMotorController, true);
 
         leftFrontMotorController = deviceManager.createVictorSPX(DeviceConnector.MC_DRIVE_LEFT_FRONT);
-        configureController(leftFrontMotorController, false);
+        configureController(leftFrontMotorController, true);
 
         rightTrain = rightBackMotorController = deviceManager.createTalonSRX(DeviceConnector.MC_DRIVE_RIGHT_BACK);
         configureController(rightBackMotorController, false);

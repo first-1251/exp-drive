@@ -12,7 +12,8 @@ public class DualStickTigerDriveInput extends TigerDriveInput {
     @Override
     double getThrottleInput(HumanInput humanInput) {
         // Just dealing with literal values here, no smoothing, no input curve.
-        return humanInput.getGamePad().ls().getVertical();
+        // "Up" is naturally negative; that is counter-intuitive for throttle, so invert the value.
+        return -humanInput.getGamePad().ls().getVertical();
     }
 
     @Override

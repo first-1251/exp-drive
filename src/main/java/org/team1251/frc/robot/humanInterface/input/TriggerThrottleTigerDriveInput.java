@@ -13,8 +13,7 @@ public class TriggerThrottleTigerDriveInput extends TigerDriveInput {
     double getThrottleInput(HumanInput humanInput) {
         // Trigger-based throttle frees up right thumb for face-buttons.
         // Just dealing with literal values here, no smoothing, no input curve.
-        // TODO: This seems backwards because negative values move us forward. Do necessary inversions to make this logical!
-        return humanInput.getGamePad().lt().getValue() - humanInput.getGamePad().rt().getValue();
+        return humanInput.getGamePad().rt().getValue() - humanInput.getGamePad().lt().getValue();
     }
 
     @Override
